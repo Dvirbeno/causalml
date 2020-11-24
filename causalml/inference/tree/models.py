@@ -946,7 +946,8 @@ class UpliftTreeClassifier:
             lsUnique = np.unique(columnValues)
 
             if (isinstance(lsUnique[0], int) or
-                    isinstance(lsUnique[0], float)):
+                    isinstance(lsUnique[0], float) or
+                    isinstance(lsUnique[0], np.floating)):
                 if len(lsUnique) > 10:
                     lspercentile = np.percentile(columnValues, [3, 5, 10, 20, 30, 50, 70, 80, 90, 95, 97])
                 else:
@@ -1274,7 +1275,7 @@ class UpliftRandomForestClassifier:
             self.classes_[treatment_group_key] = i
 
         self.uplift_forest = (
-            Parallel(n_jobs=self.n_jobs)
+            Parallel(n_jobs=self.n_jobs, verbose=200)
             (delayed(self.bootstrap)(X, treatment, y, tree) for tree in self.uplift_forest)
         )
 
