@@ -98,7 +98,7 @@ class BaseRLearner(object):
                 w_filt = (treatment_filt == group).astype(int)
                 w = (treatment == group).astype(int)
                 p[group], p_model[group] = compute_propensity_score(X=X_filt, treatment=w_filt,
-                                                                    X_pred=X, treatment_pred=w, cv=self.cv)
+                                                                    X_pred=X, treatment_pred=w)
             self.propensity_model = p_model
             self.propensity = p
         else:
@@ -237,7 +237,7 @@ class BaseRLearner(object):
         else:
             check_p_conditions(p, self.t_groups)
 
-        if isinstance(p, np.ndarray):
+        if isinstance(p, (np.ndarray, pd.Series)):
             treatment_name = self.t_groups[0]
             p = {treatment_name: convert_pd_to_np(p)}
         elif isinstance(p, dict):
@@ -482,7 +482,6 @@ class BaseRClassifier(BaseRLearner):
     """
 
     def __init__(self,
-                 learner=None,
                  outcome_learner=None,
                  effect_learner=None,
                  ate_alpha=.05,
@@ -492,18 +491,16 @@ class BaseRClassifier(BaseRLearner):
         """Initialize an R-learner classifier.
 
         Args:
-            learner (optional): a model to estimate outcomes and treatment effects. Even if specified, the user
-                must still specify either the outcome learner or the effect learner.
-            outcome_learner (optional): a model to estimate outcomes. Should have a predict_proba() method.
-            effect_learner (optional): a model to estimate treatment effects. It needs to take `sample_weight` as an
-                input argument for `fit()`
+            outcome_learner: a model to estimate outcomes. Should be a classifier.
+            effect_learner: a model to estimate treatment effects. It needs to take `sample_weight` as an
+                input argument for `fit()`. Should be a regressor.
             ate_alpha (float, optional): the confidence level alpha of the ATE estimate
             control_name (str or int, optional): name of control group
             n_fold (int, optional): the number of cross validation folds for outcome_learner
             random_state (int or RandomState, optional): a seed (int) or random number generator (RandomState)
         """
         super().__init__(
-            learner=learner,
+            learner=None,
             outcome_learner=outcome_learner,
             effect_learner=effect_learner,
             ate_alpha=ate_alpha,
@@ -542,7 +539,7 @@ class BaseRClassifier(BaseRLearner):
                 w_filt = (treatment_filt == group).astype(int)
                 w = (treatment == group).astype(int)
                 p[group], p_model[group] = compute_propensity_score(X=X_filt, treatment=w_filt,
-                                                                    X_pred=X, treatment_pred=w, cv=self.cv)
+                                                                    X_pred=X, treatment_pred=w)
             self.propensity_model = p_model
             self.propensity = p
         else:
@@ -667,7 +664,7 @@ class XGBRRegressor(BaseRRegressor):
                 w_filt = (treatment_filt == group).astype(int)
                 w = (treatment == group).astype(int)
                 p[group], p_model[group] = compute_propensity_score(X=X_filt, treatment=w_filt,
-                                                                    X_pred=X, treatment_pred=w, cv=self.cv)
+                                                                    X_pred=X, treatment_pred=w)
             self.propensity_model = p_model
             self.propensity = p
         else:
