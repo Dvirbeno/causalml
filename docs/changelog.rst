@@ -2,6 +2,67 @@
 
 Changelog
 =========
+0.9.0 (2020-10-23)
+------------------
+- CausalML won the 1st prize at the poster session in UberML'20
+- DoWhy integrated CausalML starting v0.4 (`release note <https://github.com/microsoft/dowhy/releases/tag/v0.4>`_)
+- CausalML team welcomes new project leadership, Mert Bay
+- We have 4 new community contributors, Mario Wijaya (`@mwijaya3 <https://github.com/mwijaya3>`_), Harry Zhao (`@deeplaunch <https://github.com/deeplaunch>`_), Christophe (`@ccrndn <https://github.com/ccrndn>`_) and Georg Walther (`@waltherg <https://github.com/waltherg>`_). Thanks for the contribution!
+
+Major Updates
+~~~~~~~~~~~~~
+- Add feature importance and its visualization to UpliftDecisionTrees and UpliftRF by @yungmsh (`#220 <https://github.com/uber/causalml/pull/220>`_)
+- Add feature selection example with Filter methods by @paullo0106 (`#223 <https://github.com/uber/causalml/pull/223>`_)
+
+Minor Updates
+~~~~~~~~~~~~~
+- Implement propensity model abstraction for common interface by @waltherg (`#223 <https://github.com/uber/causalml/pull/223>`_)
+- Fix bug in BaseSClassifier and BaseXClassifier by @yungmsh and @ppstacy (`#217 <https://github.com/uber/causalml/pull/217>`_), (`#218 <https://github.com/uber/causalml/pull/218>`_)
+- Fix parentNodeSummary for UpliftDecisionTrees by @paullo0106 (`#238 <https://github.com/uber/causalml/pull/238>`_)
+- Add pd.Series for propensity score condition check by @paullo0106 (`#242 <https://github.com/uber/causalml/pull/242>`_)
+- Fix the uplift random forest prediction output by @ppstacy (`#236 <https://github.com/uber/causalml/pull/236>`_)
+- Add functions and methods to init for optimization module by @mwijaya3 (`#228 <https://github.com/uber/causalml/pull/228>`_)
+- Install GitHub Stale App to close inactive issues automatically @jeongyoonlee (`#237 <https://github.com/uber/causalml/pull/237>`_)
+- Update documentation by @deeplaunch, @ccrndn, @ppstacy(`#214 <https://github.com/uber/causalml/pull/214>`_, `#231 <https://github.com/uber/causalml/pull/231>`_, `#232 <https://github.com/uber/causalml/pull/232>`_)
+
+
+
+0.8.0 (2020-07-17)
+------------------
+CausalML surpassed `100,000 downloads <https://pepy.tech/project/causalml>`_! Thanks for the support.
+
+Major Updates
+~~~~~~~~~~~~~
+- Add value optimization to `optimize` by @t-tte (`#183 <https://github.com/uber/causalml/pull/183>`_)
+- Add counterfactual unit selection to `optimize` by @t-tte (`#184 <https://github.com/uber/causalml/pull/184>`_)
+- Add sensitivity analysis to `metrics` by @ppstacy (`#199 <https://github.com/uber/causalml/pull/199>`_, `#212 <https://github.com/uber/causalml/pull/212>`_)
+- Add the `iv` estimator submodule and add 2SLS model to it by @huigangchen (`#201 <https://github.com/uber/causalml/pull/201>`_)
+
+Minor Updates
+~~~~~~~~~~~~~
+- Add `GradientBoostedPropensityModel` by @yungmsh (`#193 <https://github.com/uber/causalml/pull/193>`_)
+- Add covariate balance visualization by @yluogit (`#200 <https://github.com/uber/causalml/pull/200>`_)
+- Fix bug in the X learner propensity model by @ppstacy (`#209 <https://github.com/uber/causalml/pull/209>`_)
+- Update package dependencies by @jeongyoonlee (`#195 <https://github.com/uber/causalml/pull/195>`_, `#197 <https://github.com/uber/causalml/pull/197>`_)
+- Update documentation by @jeongyoonlee, @ppstacy and @yluogit (`#181 <https://github.com/uber/causalml/pull/181>`_, `#202 <https://github.com/uber/causalml/pull/202>`_, `#205 <https://github.com/uber/causalml/pull/205>`_)
+
+
+
+0.7.1 (2020-05-07)
+------------------
+Special thanks to our new community contributor, Katherine (`@khof312 <https://github.com/khof312>`_)!
+
+Major Updates
+~~~~~~~~~~~~~
+- Adjust matching distances by a factor of the number of matching columns in propensity score matching by @yungmsh (`#157 <https://github.com/uber/causalml/pull/157>`_)
+- Add TMLE-based AUUC/Qini/lift calculation and plotting by @ppstacy (`#165 <https://github.com/uber/causalml/pull/165>`_)
+
+Minor Updates
+~~~~~~~~~~~~~
+- Fix typos and update documents by @paullo0106, @khof312, @jeongyoonlee (`#150 <https://github.com/uber/causalml/pull/150>`_, `#151 <https://github.com/uber/causalml/pull/151>`_, `#155 <https://github.com/uber/causalml/pull/155>`_, `#163 <https://github.com/uber/causalml/pull/163>`_)
+- Fix error in `UpliftTreeClassifier.kl_divergence()` for `pk == 1 or 0` by @jeongyoonlee (`#169 <https://github.com/uber/causalml/pull/169>`_)
+- Fix error in `BaseRRegressor.fit()` without propensity score input by @jeongyoonlee (`#170 <https://github.com/uber/causalml/pull/170>`_)
+
 
 0.7.0 (2020-02-28)
 ------------------
@@ -36,7 +97,7 @@ Special thanks to our new community contributors, Paul (`@paullo0106 <https://gi
 
 - Add `TMLELearner`, targeted maximum likelihood estimator to `inference.meta` by @huigangchen
 - Add an option to DGPs for regression to simulate imbalanced propensity distribution by @huigangchen
-- Fix incorrect edge connections, and add more information in the uplift tree plot by @paulluo0106
+- Fix incorrect edge connections, and add more information in the uplift tree plot by @paullo0106
 - Fix an installation error related to `Cython` and `numpy` by @FlorianWilhelm
 - Drop Python 2 support from `setup.py` by @jeongyoonlee
 - Update `causaltree.pyx` Cython code to be compatible with `scikit-learn>=0.21.0` by @jeongyoonlee

@@ -7,6 +7,7 @@
 [![PyPI Version](https://badge.fury.io/py/causalml.svg)](https://pypi.org/project/causalml/)
 [![Build Status](https://travis-ci.com/uber/causalml.svg?token=t7jFKh1sKGtbqHWp2sGn&branch=master)](https://travis-ci.com/uber/causalml)
 [![Documentation Status](https://readthedocs.org/projects/causalml/badge/?version=latest)](http://causalml.readthedocs.io/en/latest/?badge=latest)
+[![Downloads](https://pepy.tech/badge/causalml)](https://pepy.tech/project/causalml)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/3015/badge)](https://bestpractices.coreinfrastructure.org/projects/3015)
 
 
@@ -34,6 +35,8 @@ The package currently supports the following methods
     * T-learner
     * X-learner
     * R-learner
+* **Instrumental variables algorithms**
+    * 2-Stage Least Squares (2SLS)
 
 
 # Installation
@@ -110,6 +113,11 @@ Causal ML provides methods to interpret the treatment effect models trained as f
 
 ```python
 from causalml.inference.meta import BaseSRegressor, BaseTRegressor, BaseXRegressor, BaseRRegressor
+from causalml.dataset.regression import synthetic_data
+
+# Load synthetic data
+y, X, treatment, tau, b, e = synthetic_data(mode=1, n=10000, p=25, sigma=0.5)
+w_multi = np.array(['treatment_A' if x==1 else 'control' for x in treatment]) # customize treatment/control names
 
 slearner = BaseSRegressor(LGBMRegressor(), control_name='control')
 slearner.estimate_ate(X, w_multi, y)

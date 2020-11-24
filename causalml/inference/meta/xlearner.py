@@ -174,7 +174,7 @@ class BaseXLearner(object):
             logger.info('Generating propensity score')
             p = dict()
             for group in self.t_groups:
-                p_model = self.propensity_model[group]['all training']
+                p_model = self.propensity_model[group]
                 p[group] = p_model.predict(X)
         else:
             check_p_conditions(p, self.t_groups)
@@ -245,7 +245,7 @@ class BaseXLearner(object):
             p = self.propensity
 
         check_p_conditions(p, self.t_groups)
-        if isinstance(p, np.ndarray):
+        if isinstance(p, (np.ndarray, pd.Series)):
             treatment_name = self.t_groups[0]
             p = {treatment_name: convert_pd_to_np(p)}
         elif isinstance(p, dict):
@@ -305,7 +305,7 @@ class BaseXLearner(object):
             p = self.propensity
         else:
             check_p_conditions(p, self.t_groups)
-        if isinstance(p, np.ndarray):
+        if isinstance(p, (np.ndarray, pd.Series)):
             treatment_name = self.t_groups[0]
             p = {treatment_name: convert_pd_to_np(p)}
         elif isinstance(p, dict):
@@ -562,7 +562,8 @@ class BaseXClassifier(BaseXLearner):
     """
 
     def __init__(self,
-                 learner=None,
+                 outcome_learner=None,
+                 effect_learner=None,
                  control_outcome_learner=None,
                  treatment_outcome_learner=None,
                  control_effect_learner=None,
@@ -572,20 +573,30 @@ class BaseXClassifier(BaseXLearner):
         """Initialize an X-learner classifier.
 
         Args:
-            learner (optional): a model to estimate outcomes or treatment effects in both the control and treatment
-                groups. Even if specified, the user must still input either the outcome learner or the effect learner
-                pair.
+            outcome_learner (optional): a model to estimate outcomes in both the control and treatment groups.
+                Should be a regressor.
+            effect_learner (optional): a model to estimate treatment effects in both the control and treatment groups.
+                Should be a classifier.
             control_outcome_learner (optional): a model to estimate outcomes in the control group.
-                Should have a predict_proba() method.
+                Should be a regressor.
             treatment_outcome_learner (optional): a model to estimate outcomes in the treatment group.
-                Should have a predict_proba() method.
-            control_effect_learner (optional): a model to estimate treatment effects in the control group
+                Should be a regressor.
+            control_effect_learner (optional): a model to estimate treatment effects in the control group.
+                Should be a classifier.
             treatment_effect_learner (optional): a model to estimate treatment effects in the treatment group
+                Should be a classifier.
             ate_alpha (float, optional): the confidence level alpha of the ATE estimate
             control_name (str or int, optional): name of control group
         """
+        if outcome_learner is not None:
+            control_outcome_learner = outcome_learner
+            treatment_outcome_learner = outcome_learner
+        if effect_learner is not None:
+            control_effect_learner = effect_learner
+            treatment_effect_learner = effect_learner
+
         super().__init__(
-            learner=learner,
+            learner=None,
             control_outcome_learner=control_outcome_learner,
             treatment_outcome_learner=treatment_outcome_learner,
             control_effect_learner=control_effect_learner,
@@ -690,7 +701,7 @@ class BaseXClassifier(BaseXLearner):
             logger.info('Generating propensity score')
             p = dict()
             for group in self.t_groups:
-                p_model = self.propensity_model[group]['all training']
+                p_model = self.propensity_model[group]
                 p[group] = p_model.predict(X)
         else:
             check_p_conditions(p, self.t_groups)

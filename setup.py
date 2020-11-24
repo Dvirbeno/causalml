@@ -13,7 +13,7 @@ except ImportError:
     from numpy import get_include as np_get_include
 
 
-with open("README.md", "r") as f:
+with open("README.md", "r", encoding="utf-8") as f:
     long_description = f.read()
 
 
@@ -33,7 +33,7 @@ packages = find_packages()
 setup(
     name="causalml",
     version=causalml.__version__,
-    author="Huigang Chen, Totte Harinen, Jeong-Yoon Lee, Mike Yung, Zhenyu Zhao",
+    author="Huigang Chen, Totte Harinen, Jeong-Yoon Lee, Yuchen Luo, Jing Pan, Mike Yung, Zhenyu Zhao",
     author_email="",
     description="Python Package for Uplift Modeling and Causal Inference with Machine Learning Algorithms",
     long_description=long_description,
