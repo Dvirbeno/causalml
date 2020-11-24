@@ -1458,7 +1458,7 @@ class UpliftTreeRegressor(UpliftTreeClassifier):
             pc = currentNodeSummary[self.control_name][0]
             nc = currentNodeSummary[self.control_name][1]
             std_c = currentNodeSummary[self.control_name][2]
-            p_value = (1. - stats.norm.cdf((pt - pc) / np.sqrt((std_t ** 2) / nt + (std_c ** 2) / nc))) * 2
+            p_value = stats.norm.cdf((pt - pc) / np.sqrt((std_t ** 2) / nt + (std_c ** 2) / nc)) * 2
         else:
             pt = currentNodeSummary[suboptTreatment][0]
             nt = currentNodeSummary[suboptTreatment][1]
@@ -1466,7 +1466,7 @@ class UpliftTreeRegressor(UpliftTreeClassifier):
             pc = currentNodeSummary[self.control_name][0]
             nc = currentNodeSummary[self.control_name][1]
             std_c = currentNodeSummary[self.control_name][2]
-            p_value = (1. - stats.norm.cdf((pt - pc) / np.sqrt((std_t ** 2) / nt + (std_c ** 2) / nc))) * 2
+            p_value = stats.norm.cdf((pt - pc) / np.sqrt((std_t ** 2) / nt + (std_c ** 2) / nc)) * 2
         upliftScore = [maxDiff, p_value]
 
         bestGain = 0.0
@@ -1485,9 +1485,11 @@ class UpliftTreeRegressor(UpliftTreeClassifier):
             lsUnique = np.unique(columnValues)
 
             if (isinstance(lsUnique[0], int) or
-                isinstance(lsUnique[0], float)):
+                isinstance(lsUnique[0], float) or
+                isinstance(lsUnique[0], np.float32)):
                 if len(lsUnique) > 10:
-                    lspercentile = np.percentile(columnValues, [3, 5, 10, 20, 30, 50, 70, 80, 90, 95, 97])
+                    repr_percs = [0.5, 3, 5, 10, 30, 50, 70, 90, 95, 97, 99.5] #original values: [3, 5, 10, 20, 30, 50, 70, 80, 90, 95, 97]
+                    lspercentile = np.percentile(columnValues, repr_percs)
                 else:
                     lspercentile = np.percentile(lsUnique, [10, 50, 90])
                 lsUnique = np.unique(lspercentile)
