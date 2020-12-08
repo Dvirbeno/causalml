@@ -181,7 +181,7 @@ class UpliftTreeClassifier:
 
         self.treatment_group = list(set(treatment))
         self.feature_imp_dict = defaultdict(float)
-        self.obligatory_features = obligatory_features
+        self.obligatory_features = obligatory_features if obligatory_features is not None else []
 
         self.fitted_uplift_tree = self.growDecisionTreeFrom(
             X, treatment, y, evaluationFunction=self.evaluationFunction,
